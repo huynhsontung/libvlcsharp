@@ -83,9 +83,9 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     </Page>
   </ItemGroup>
   
-  <ItemGroup Condition="$(TargetFramework.Contains('windows10')) ">
+  <!-- <ItemGroup Condition="$(TargetFramework.Contains('windows10')) ">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
-  </ItemGroup>
+  </ItemGroup> -->
 
   <ItemGroup Condition="$(DefineConstants.Contains('UWP'))">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
