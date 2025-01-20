@@ -51,6 +51,13 @@ Task("Restore-NuGet-Packages")
     DotNetRestore(solutionPath);
 });
 
+Task("Restore-NuGet-Packages-LibVLCSharp")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    DotNetRestore("../src/LibVLCSharp/LibVLCSharp.csproj");
+});
+
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
@@ -60,7 +67,7 @@ Task("Build")
 
 // just for (faster) testing
 Task("Build-only-libvlcsharp")
-    .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("Restore-NuGet-Packages-LibVLCSharp")
     .Does(() =>
 {
     Build(libvlcsharpCsproj);
