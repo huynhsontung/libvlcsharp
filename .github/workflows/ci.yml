@@ -14,7 +14,8 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
-          # cache: true
+          cache: true
+          cache-dependency-path: src/LibVLCSharp/packages.lock.json
       # - name: Install dotnet workloads
       #   run: |
       #     dotnet workload install android
@@ -41,7 +42,8 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
-          # cache: true
+          cache: true
+          cache-dependency-path: src/LibVLCSharp/packages.lock.json
       - name: Install Cake
         run: dotnet tool install Cake.Tool --global
       - uses: actions/download-artifact@v4
