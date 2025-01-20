@@ -15,7 +15,7 @@
     <DefineConstants>$(DefineConstants);UWP;WINDOWS_MODERN</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.Contains('windows10'))">
-    <DefineConstants>$(DefineConstants);WINUI;WINDOWS_MODERN</DefineConstants>
+    <DefineConstants>$(DefineConstants);UWP;WINDOWS_MODERN</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
     <DefineConstants>$(DefineConstants);UWP10_0</DefineConstants>
