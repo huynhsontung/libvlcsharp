@@ -107,6 +107,7 @@ void Build(string project)
 {
     var settings = new MSBuildSettings();
     settings.SetConfiguration(configuration)
+            .SetVerbosity(Verbosity.Verbose)
             .WithProperty("PackageOutputPath", MakeAbsolute(artifactsDir).FullPath);
 
     if(isCiBuild)
