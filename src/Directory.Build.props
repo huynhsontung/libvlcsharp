@@ -11,10 +11,10 @@
   <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
     <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) Or '$(UseUwp)' == 'true'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) Or $(TargetFramework.StartsWith('net9.0-windows10'))">
     <DefineConstants>$(DefineConstants);UWP;WINDOWS_MODERN</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('windows10')) And '$(UseUwp)' != 'true'">
+  <PropertyGroup Condition="$(TargetFramework.Contains('windows10')) And !$(TargetFramework.StartsWith('net9.0-windows10'))">
     <DefineConstants>$(DefineConstants);WINUI;WINDOWS_MODERN</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
