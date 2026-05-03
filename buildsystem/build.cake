@@ -131,14 +131,18 @@ Task("CIDeploy")
 
 void Build(string project)
 {
-    var settings = new DotNetPackSettings
-    {
-        Configuration = configuration,
-        OutputDirectory = MakeAbsolute(artifactsDir).FullPath,
-        VersionSuffix = isCiBuild ? suffixVersion : null,
-    };
+    var settings = new MSBuildSettings();
+    settings.SetConfiguration(configuration)
+            .WithProperty("PackageOutputPath", MakeAbsolute(artifactsDir).FullPath);
 
-    DotNetPack(project, settings);
+    if(isCiBuild)
+    {
+        settings.WithProperty("VersionSuffix", suffixVersion);
+    }
+
+    settings.ToolVersion = MSBuildToolVersion.VS2022;
+
+    MSBuild(project, settings);
 }
 
 //////////////////////////////////////////////////////////////////////
