@@ -44,7 +44,7 @@
       }
     },
     ".NETStandard,Version=v2.1": {},
-    "UAP,Version=v10.0.22621": {
+    "UAP,Version=v10.0.26100": {
       "Microsoft.NETCore.UniversalWindowsPlatform": {
         "type": "Direct",
         "requested": "[6.2.12, )",
