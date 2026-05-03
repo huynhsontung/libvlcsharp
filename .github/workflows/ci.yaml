@@ -11,6 +11,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: microsoft/setup-msbuild@v3
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.x'
@@ -39,6 +40,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: microsoft/setup-msbuild@v3
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.x'
