@@ -60,6 +60,13 @@ Task("Clean")
     }
 });
 
+Task("Restore-NuGet-Packages-LibVLCSharp")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    DotNetRestore(libvlcsharpCsproj);
+});
+
 Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
@@ -86,7 +93,7 @@ Task("Build-Libraries")
 
 // just for (faster) testing
 Task("Build-only-libvlcsharp")
-    .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("Restore-NuGet-Packages-LibVLCSharp")
     .Does(() =>
 {
     Build(libvlcsharpCsproj);
