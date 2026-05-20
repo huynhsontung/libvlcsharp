@@ -37,6 +37,7 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     <PackageId>LibVLCSharp</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <RuntimeIdentifiers Condition="$(TargetFramework.Contains('-windows10'))">win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <!-- https://github.com/novotnyllc/MSBuildSdkExtras/issues/305 -->
     <TargetFrameworkIdentifier Condition=" $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp' ">.NETCoreApp</TargetFrameworkIdentifier>
   </PropertyGroup>
@@ -47,6 +48,9 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
   <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
     <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
+  </PropertyGroup>
+    <PropertyGroup Condition="$(TargetFramework.Contains('windows10')) And '$(UseUwp)' != 'true'">
+    <DisableWinAppSDKPriGeneration>true</DisableWinAppSDKPriGeneration>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />
@@ -75,13 +79,17 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
   </ItemGroup>
   
-  <ItemGroup Condition="$(TargetFramework.StartsWith('uap')) Or '$(UseUwp)' == 'true'">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('uap')) Or $(TargetFramework.Contains('windows10'))">
     <Compile Include="Platforms\Windows\**\*.cs" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('windows10')) And '$(UseUwp)' != 'true'">
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
   </ItemGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains('UWP'))">

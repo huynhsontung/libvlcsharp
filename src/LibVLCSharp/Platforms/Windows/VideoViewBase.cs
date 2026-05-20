@@ -6,10 +6,16 @@ using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
-using Windows.ApplicationModel;
 using Windows.System.Profile;
+
+#if WINUI
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+#else
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.ApplicationModel;
+#endif
 
 namespace LibVLCSharp.Platforms.Windows
 {
@@ -39,10 +45,12 @@ namespace LibVLCSharp.Platforms.Windows
             DefaultStyleKey = typeof(VideoView);
 
             Unloaded += (s, e) => DestroySwapChain();
+#if !WINUI
             if (!DesignMode.DesignModeEnabled)
             {
                 Application.Current.Suspending += (s, e) => { Trim(); };
             }
+#endif
         }
 
         /// <summary>
@@ -55,8 +63,10 @@ namespace LibVLCSharp.Platforms.Windows
             base.OnApplyTemplate();
             _panel = (SwapChainPanel)GetTemplateChild(PartSwapChainPanelName);
 
+#if !WINUI
             if (DesignMode.DesignModeEnabled)
                 return;
+#endif
             DestroySwapChain();
 
             _panel.SizeChanged += (s, eventArgs) =>
@@ -410,4 +420,12 @@ namespace LibVLCSharp.Platforms.Windows
             }
         }
     }
+
+#if WINUI
+    [Guid("63aad0b8-7c24-40ff-85a8-640d944cc325")]
+    internal class ISwapChainPanelNative : SharpDX.DXGI.ISwapChainPanelNative
+    {
+        public ISwapChainPanelNative(IntPtr nativePtr) : base(nativePtr) { }
+    }
+#endif
 }
