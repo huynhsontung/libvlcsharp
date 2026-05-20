@@ -8,7 +8,6 @@
     <MSBuildExtensionsPath>$(VS2022Root)\MSBuild</MSBuildExtensionsPath>
     <VsInstallRoot>$(VS2022Root)</VsInstallRoot>
     <TargetFrameworkRootPath>$(VS2022Root)\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\</TargetFrameworkRootPath>
-    <UseUwp Condition="$(TargetFramework.Contains('-windows10.0.2'))">true</UseUwp>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.Contains('ios'))">
@@ -23,13 +22,13 @@
   <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
     <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) Or '$(UseUwp)' == 'true'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) Or $(TargetFramework.Contains('-windows10.0.2'))">
     <DefineConstants>$(DefineConstants);UWP;WINDOWS_MODERN</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('windows10')) And '$(UseUwp)' != 'true'">
+  <PropertyGroup Condition="$(TargetFramework.Contains('windows10')) And !$(TargetFramework.Contains('-windows10.0.2'))">
     <DefineConstants>$(DefineConstants);WINUI;WINDOWS_MODERN</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0' Or '$(UseUwp)' == 'true'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0' Or $(TargetFramework.Contains('-windows10.0.2'))">
     <DefineConstants>$(DefineConstants);UWP10_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="!$(DefineConstants.Contains('ANDROID')) and !$(DefineConstants.Contains('APPLE')) and !$(DefineConstants.Contains('UWP'))">
