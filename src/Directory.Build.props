@@ -8,7 +8,7 @@
     <MSBuildExtensionsPath>$(VS2022Root)\MSBuild</MSBuildExtensionsPath>
     <VsInstallRoot>$(VS2022Root)</VsInstallRoot>
     <TargetFrameworkRootPath>$(VS2022Root)\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\</TargetFrameworkRootPath>
-    <UseUwp Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0')) And $(TargetFramework.Contains('-windows10.0.2'))">true</UseUwp>
+    <UseUwp Condition="$(TargetFramework.Contains('-windows10.0.2'))">true</UseUwp>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.Contains('ios'))">
