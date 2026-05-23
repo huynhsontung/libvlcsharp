@@ -1,5 +1,3 @@
-#tool nuget:?package=NuGet.CommandLine&version=5.11.0
-
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -29,8 +27,8 @@ var libraryProjects = new string[]
 var testCsproj = "../src/LibVLCSharp.Tests/LibVLCSharp.Tests.csproj";
 
 var packagesDir = "../packages";
-var isCiBuild = BuildSystem.AzurePipelines.IsRunningOnAzurePipelines;
-var suffixVersion = $"alpha-{DateTime.Today.ToString("yyyyMMdd")}-{BuildSystem.AzurePipelines.Environment.Build.Id}";
+var isCiBuild = BuildSystem.GitHubActions.IsRunningOnGitHubActions;
+var suffixVersion = $"{DateTime.Today.ToString("yyyyMMdd")}+{BuildSystem.GitHubActions.Environment.Workflow.RunNumber}";
 var feedzLVSSource = "https://f.feedz.io/videolan/preview/nuget/index.json";
 var FEEDZ = "FEEDZ";
 const uint totalPackageCount = 12;
@@ -60,6 +58,13 @@ Task("Clean")
     }
 });
 
+Task("Restore-NuGet-Packages-LibVLCSharp")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    DotNetRestore(libvlcsharpCsproj);
+});
+
 Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
@@ -86,7 +91,7 @@ Task("Build-Libraries")
 
 // just for (faster) testing
 Task("Build-only-libvlcsharp")
-    .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("Restore-NuGet-Packages-LibVLCSharp")
     .Does(() =>
 {
     Build(libvlcsharpCsproj);
@@ -132,8 +137,6 @@ void Build(string project)
     {
         settings.WithProperty("VersionSuffix", suffixVersion);
     }
-
-    settings.ToolVersion = MSBuildToolVersion.VS2022;
 
     MSBuild(project, settings);
 }
