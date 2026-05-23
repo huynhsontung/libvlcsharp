@@ -34,7 +34,7 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     <Configurations>Debug;Release;Win32Debug;Win32Release</Configurations>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
-    <PackageId>LibVLCSharp</PackageId>
+    <PackageId>Starpine.LibVLCSharp</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableDefaultPageItems>false</EnableDefaultPageItems>
     <UseUwp Condition="$(TargetFramework.Contains('-windows10.0.2'))">true</UseUwp>
