@@ -28,7 +28,7 @@ var testCsproj = "../src/LibVLCSharp.Tests/LibVLCSharp.Tests.csproj";
 
 var packagesDir = "../packages";
 var isCiBuild = BuildSystem.GitHubActions.IsRunningOnGitHubActions;
-var suffixVersion = $"alpha-{DateTime.Today.ToString("yyyyMMdd")}-{BuildSystem.GitHubActions.Environment.Workflow.RunNumber}";
+var suffixVersion = $"{DateTime.Today.ToString("yyyyMMdd")}+{BuildSystem.GitHubActions.Environment.Workflow.RunNumber}";
 var feedzLVSSource = "https://f.feedz.io/videolan/preview/nuget/index.json";
 var FEEDZ = "FEEDZ";
 const uint totalPackageCount = 12;
