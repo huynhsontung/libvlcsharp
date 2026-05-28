@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 3.x
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-2025-vs2026
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.x'
+      # - name: Install dotnet workloads
+      #   run: |
+      #     dotnet workload install android
+      #     dotnet workload install ios
+      #     dotnet workload install macos
+      #     dotnet workload install tvos
+      - name: Install Cake
+        run: dotnet tool install Cake.Tool --global
+      - name: Build
+        run: dotnet cake --target Build-only-libvlcsharp
+        working-directory: buildsystem
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: nugets
+          path: nugets
+          if-no-files-found: error
+  
+  test:
+    needs: build
+    runs-on: windows-2025-vs2026
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.x'
+      - name: Install Cake
+        run: dotnet tool install Cake.Tool --global
+      - uses: actions/download-artifact@v8
+      - name: Test
+        run: dotnet cake --target Test
+        working-directory: buildsystem
+
+  publish:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.x'
+      - uses: actions/download-artifact@v8
+      - name: Publish
+        run: dotnet nuget push "*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" -s "https://api.nuget.org/v3/index.json"
+        working-directory: nugets
